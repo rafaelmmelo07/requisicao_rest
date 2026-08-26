@@ -40,7 +40,7 @@ public class UsuarioController {
 
 
     @PostMapping
-    public Usuario cadastroUsuari(@RequestBody Usuario usuario) {
+    public Usuario cadastroUsuario(@RequestBody Usuario usuario) {
         return  usuarioRepository.save(usuario);
     }
 
