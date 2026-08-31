@@ -1,23 +1,36 @@
-package com.example.cadastros;
+package com.example.cadastros.domain.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.br.CPF;
 
-import java.util.Objects;
 import java.util.UUID;
+@Entity
+@Table(
+        name = "usuarios",
+        uniqueConstraints = {
+                @UniqueConstraint(name = "uk_usuario_cpf", columnNames = "cpf"),
+                @UniqueConstraint(name = "uk_usuario_email", columnNames = "email")
+        },
+        indexes = {
+                @Index(name = "idx_usuario_nome", columnList = "nome"),
+                @Index(name = "idx_usuario_email", columnList = "email")
+        }
+)
+
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Usuario {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -30,9 +43,12 @@ public class Usuario {
     private String nome;
 
     @NotBlank(message = "CPF é obrigatório")
-    @Pattern(regexp = "\\d{11}", message = "CPF deve conter exatamente 11 dígitos")
+   // @Pattern(regexp = "\\d{11}", message = "CPF deve conter exatamente 11 dígitos")
     @Column(name = "cpf", nullable = false, length = 11, unique = true)
+    @CPF(message = "CPF invalido")
     private String cpf;
+
+
 
     @NotBlank(message = "E-mail é obrigatório")
     @Email(message = "E-mail inválido")

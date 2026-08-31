@@ -1,10 +1,11 @@
-package com.example.cadastros;
+package com.example.cadastros.Interface_ui.controller;
 
+import com.example.cadastros.domain.repository.UsuarioRepository;
+import com.example.cadastros.domain.entity.Usuario;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -40,7 +41,7 @@ public class UsuarioController {
 
 
     @PostMapping
-    public Usuario cadastroUsuario(@RequestBody Usuario usuario) {
+    public Usuario cadastroUsuario( @Valid @RequestBody Usuario usuario) {
         return  usuarioRepository.save(usuario);
     }
 
@@ -48,7 +49,7 @@ public class UsuarioController {
     @PutMapping("/{id}")
     //PutMapping = é o caminho que ele vai puxar o id
 
-    public Usuario atualizarUsuario(@PathVariable UUID id, @RequestBody Usuario usuario) {
+    public Usuario atualizarUsuario(@PathVariable UUID id, @Valid @RequestBody Usuario usuario) {
         Usuario usuarioExistente = buscarioporID(id);
         usuarioExistente.setNome(usuario.getNome());
         usuarioExistente.setCpf(usuario.getCpf());
