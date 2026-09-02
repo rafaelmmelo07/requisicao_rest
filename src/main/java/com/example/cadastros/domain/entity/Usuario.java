@@ -31,6 +31,11 @@ import java.util.UUID;
 @AllArgsConstructor
 public class Usuario {
 
+    @NotBlank(message = "Senha é obrigatorio")
+    @Size(min = 4, max = 0, message = "Senha deve ter entre 4 e 8 caractere")
+    @Column(name = "senha", nullable = false,length = 8)
+    private String senha;
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

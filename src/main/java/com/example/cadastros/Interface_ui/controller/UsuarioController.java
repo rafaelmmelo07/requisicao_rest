@@ -1,5 +1,6 @@
 package com.example.cadastros.Interface_ui.controller;
 
+import com.example.cadastros.aplication.service.UsuarioService;
 import com.example.cadastros.domain.repository.UsuarioRepository;
 import com.example.cadastros.domain.entity.Usuario;
 import jakarta.validation.Valid;
@@ -17,52 +18,37 @@ import java.util.UUID;
 
 public class UsuarioController {
 
-    final UsuarioRepository usuarioRepository;
+   final UsuarioService usuarioService;
 
 
     @GetMapping
     public List<Usuario> listarTodosUsuarios() {
-        return usuarioRepository.findAll();
+        return usuarioService.findAll();
 
     }
 
 
     @GetMapping("/{id}")
     public Usuario buscarioporID(@PathVariable UUID id) {
-
-        Optional<Usuario> usuario0pt = usuarioRepository.findById(id);
-
-        if (usuario0pt.isPresent()) {
-            return usuario0pt.get();
-        } else {
-            throw new RuntimeException("Usuario nao encontrado ");
-        }
+        return usuarioService.findById(id);
     }
 
 
     @PostMapping
-    public Usuario cadastroUsuario( @Valid @RequestBody Usuario usuario) {
-        return  usuarioRepository.save(usuario);
+    public Usuario cadastroUsuario( @RequestBody Usuario usuario) {
+        return  usuarioService.save(usuario);
     }
 
 
     @PutMapping("/{id}")
     //PutMapping = é o caminho que ele vai puxar o id
-
     public Usuario atualizarUsuario(@PathVariable UUID id, @Valid @RequestBody Usuario usuario) {
-        Usuario usuarioExistente = buscarioporID(id);
-        usuarioExistente.setNome(usuario.getNome());
-        usuarioExistente.setCpf(usuario.getCpf());
-        usuarioExistente.setEmail(usuario.getEmail());
-
-
-        return usuarioRepository.save(usuarioExistente);
+     return usuarioService.update(id,usuario);
     }
 
     @DeleteMapping("/{id}")
-    public void excluirUsuario(@PathVariable UUID id) {
-        usuarioRepository.deleteById(id);
-
+    public void excluirUsuario(@PathVariable UUID id){
+          usuarioService.delete(id);
     }
 }
 
